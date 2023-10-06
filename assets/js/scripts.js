@@ -23,8 +23,6 @@ $(".btn").click(function () {
 });
 
 function checkAnswer(currentLevel) {
-
-    //3. Write an if statement inside checkAnswer() to check if the most recent user answer is the same as the game pattern. If so then log "success", otherwise log "wrong".
     if (gamePattern[currentLevel] === userClickedPattern[currentLevel]) {
         console.log("success");
         if (userClickedPattern.length === gamePattern.length) {
@@ -33,7 +31,14 @@ function checkAnswer(currentLevel) {
             }, 1000);
         }
     } else {
-        console.log("wrong");
+        console.log("wrong")
+        playSound("wrong")
+        $("body").addClass("game-over")
+        setTimeout( () => {
+            $("body").removeClass("game-over")
+        }, 200);
+        $("#level-title").text("Game Over - Press Any Key to Restart!")
+        startOver();
     }
 }
 
@@ -49,7 +54,7 @@ function nextSequence() {
 }
 
 function playSound(name) {
-    const audio = new Audio("sounds/" + name + ".mp3");
+    const audio = new Audio("./assets/sounds/" + name + ".mp3");
     audio.play();
 }
 
@@ -58,4 +63,11 @@ function animatePress(currentColor) {
     setTimeout(function () {
         $("#" + currentColor).removeClass("pressed");
     }, 100);
+}
+
+function startOver() {
+    gamePattern = [];
+    userClickedPattern = [];
+    started = false;
+    level = 0;
 }
